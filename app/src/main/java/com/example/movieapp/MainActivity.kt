@@ -1,8 +1,8 @@
-package com.example.moveapp
+package com.example.movieapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.moveapp.databinding.ActivityMainBinding
+import com.example.movieapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
