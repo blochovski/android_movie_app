@@ -1,7 +1,27 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
-    ext.navigation_version = '2.5.0'
-    ext.hilt_version = '2.42'
+    ext {
+        kotlin_version = '1.8.20'
+        navigation_version = '2.5.0'
+        hilt_version = '2.44.2'
+        okHttp_version = "4.9.3"
+        moshi_version = "1.14.0"
+
+
+        
+
+        buildToolsVersion = "30.0.2"
+        compileSdkVersion = 31
+        targetSdkVersion = compileSdkVersion
+        minSdkVersion = 23
+
+        room_version = "2.4.2"
+        androidx_hilt_version = "1.0.0-alpha03"
+        nav_version = "2.4.2"
+
+        glide_version = "4.11.0"
+        security_version = "1.1.0-alpha03"
+        babylonhealth_version = "0.3.0"
+    }
 
     repositories {
         google()
