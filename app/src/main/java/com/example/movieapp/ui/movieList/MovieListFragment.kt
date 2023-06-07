@@ -12,16 +12,26 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MovieListFragment : Fragment() {
 
-    private val binding: FragmentMovieListBinding  by lazy { FragmentMovieListBinding.inflate(layoutInflater) }
+    private val binding: FragmentMovieListBinding by lazy {
+        FragmentMovieListBinding.inflate(
+            layoutInflater
+        )
+    }
     private val viewModel: MovieListFragmentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        observeObservables()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = binding.root
+
+    private fun observeObservables() {
+        viewModel.movies.observe(this){
+            binding.tempText.text = it.toString()
+        }
+    }
 }
