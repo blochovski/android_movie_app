@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.moveapp'
+    namespace 'com.example.movieapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.moveapp"
+        applicationId "com.example.movieapp"
         minSdk 23
         targetSdk 33
         versionCode 1
