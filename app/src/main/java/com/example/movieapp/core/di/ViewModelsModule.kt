@@ -12,5 +12,8 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 abstract class ViewModelsModule {
 
     @Binds
-    abstract fun bindMovieRepository(repository: MovieRepositoryImpl): MovieRepository
+    abstract fun bindRemoteMovieRepository(repository: MovieRepositoryImpl): MovieRepository.Remote
+
+    @Binds
+    abstract fun bindLocalMovieRepository(repository: MovieRepositoryImpl): MovieRepository.Local
 }
