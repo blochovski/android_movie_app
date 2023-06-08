@@ -41,7 +41,8 @@ class MovieListFragment : Fragment() {
 
     private fun observeObservables() {
         viewModel.movies.observe(viewLifecycleOwner) {
-            binding.movieList.adapter = MovieListAdapter(it, ::navigateToMovieDetails)
+            binding.movieList.adapter =
+                MovieListAdapter(it, ::navigateToMovieDetails, ::onFavoriteClick)
         }
     }
 
@@ -54,4 +55,6 @@ class MovieListFragment : Fragment() {
             movie = movie
         )
     )
+
+    private fun onFavoriteClick(movie: Movie) = viewModel.updateMovie(movie)
 }

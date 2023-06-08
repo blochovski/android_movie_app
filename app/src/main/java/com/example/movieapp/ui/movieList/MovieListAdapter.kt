@@ -8,7 +8,8 @@ import com.example.movieapp.databinding.MovieListItemBinding
 
 class MovieListAdapter(
     var movies: List<Movie>,
-    val onItemClick: (Movie) -> Unit
+    private val onItemClick: (Movie) -> Unit,
+    private val onFavoriteClick: (Movie) -> Unit
 ) :
     RecyclerView.Adapter<MovieListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder =
@@ -26,6 +27,6 @@ class MovieListAdapter(
         holder.itemView.setOnClickListener {
             onItemClick(movies[position])
         }
-        holder.bind(movie = movies[position])
+        holder.bind(movie = movies[position], onFavoriteClick = onFavoriteClick)
     }
 }

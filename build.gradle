@@ -5,6 +5,7 @@ buildscript {
         hilt_version = '2.44.2'
         okHttp_version = "4.9.3"
         moshi_version = "1.14.0"
+        room_version = "2.5.1"
 
 
         
@@ -13,10 +14,6 @@ buildscript {
         compileSdkVersion = 31
         targetSdkVersion = compileSdkVersion
         minSdkVersion = 23
-
-        room_version = "2.4.2"
-        androidx_hilt_version = "1.0.0-alpha03"
-        nav_version = "2.4.2"
 
         glide_version = "4.11.0"
         security_version = "1.1.0-alpha03"
