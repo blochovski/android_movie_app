@@ -9,9 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.movie.Movie
+import com.example.exceptions.NoMoreMoviesException
 import com.example.movieapp.databinding.FragmentMovieListBinding
+import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Loaded
+import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Loading
 import dagger.hilt.android.AndroidEntryPoint
+import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Error as StateError
 
 @AndroidEntryPoint
 class MovieListFragment : Fragment() {
@@ -26,7 +31,7 @@ class MovieListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initMovieList()
+
     }
 
     override fun onCreateView(
@@ -36,19 +41,43 @@ class MovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeObservables()
+        setupUI()
     }
 
-    private fun observeObservables() {
-        viewModel.movies.observe(viewLifecycleOwner) {
-            binding.movieList.adapter =
-                MovieListAdapter(it, ::navigateToMovieDetails, ::onFavoriteClick)
+    private fun observeViewStateUpdates(adapter: MovieListAdapter) {
+        viewModel.state.observe(viewLifecycleOwner) {
+            updateScreenState(it, adapter)
         }
     }
 
-    private fun initMovieList() = binding.movieList.apply {
-        layoutManager = LinearLayoutManager(context)
+    private fun setupUI() {
+        val adapter = newAdapter()
+        initMovieList(adapter)
+        observeViewStateUpdates(adapter)
     }
+
+    private fun initMovieList(movieListAdapter: MovieListAdapter) = binding.movieList.apply {
+        layoutManager = LinearLayoutManager(context)
+        adapter = movieListAdapter
+        setHasFixedSize(true)
+        addOnScrollListener(
+            newInfiniteScrollListener(layoutManager as LinearLayoutManager)
+        )
+    }
+
+    private fun newInfiniteScrollListener(
+        layoutManager: LinearLayoutManager
+    ): RecyclerView.OnScrollListener {
+        return object : InfiniteScrollListener(layoutManager, PAGE_SIZE) {
+            override fun loadMoreItems() = onMoviesEvent()
+            override fun isLoading(): Boolean = viewModel.isLoadingMoreMovies
+            override fun isLastPage(): Boolean = viewModel.isLastPage
+        }
+    }
+
+    private fun newAdapter(): MovieListAdapter =
+        MovieListAdapter(::navigateToMovieDetails, ::onFavoriteClick)
+
 
     private fun navigateToMovieDetails(movie: Movie) = navController.navigate(
         MovieListFragmentDirections.actionMovieListFragmentToMovieDetailsFragment(
@@ -56,5 +85,35 @@ class MovieListFragment : Fragment() {
         )
     )
 
-    private fun onFavoriteClick(movie: Movie) = viewModel.updateMovie(movie)
+    private fun onFavoriteClick(index: Int, movie: Movie) {
+        movie.isFavorite = !movie.isFavorite
+        binding.movieList.adapter?.apply { notifyItemChanged(index) }
+        viewModel.updateMovie(movie)
+    }
+
+    fun onMoviesEvent() {
+        viewModel.loadNextMoviesPage()
+    }
+
+    private fun onError(error: Throwable) {
+        when (error) {
+            is NoMoreMoviesException -> Unit
+        }
+    }
+
+    private fun updateScreenState(state: MovieListFragmentUiState, adapter: MovieListAdapter) {
+        when (state) {
+            Loading -> Unit // TODO binding.progressBar.isVisible = true
+            is Loaded -> {
+                // TODO binding.progressBar.isVisible = false
+                adapter.submitList(state.movies)
+            }
+
+            is StateError -> onError(state.error)
+        }
+    }
+
+    companion object {
+        val PAGE_SIZE = 20
+    }
 }

@@ -8,7 +8,7 @@ object ApiConstants {
 
 object ApiParameters {
     const val API_KEY = "api_key"
-
+    const val PAGE = "page"
 }
 
 const val API_KEY = "26000dcbbe945c696e6c1c773dbe6b74"

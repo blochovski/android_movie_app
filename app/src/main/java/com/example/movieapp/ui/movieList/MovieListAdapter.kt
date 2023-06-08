@@ -2,16 +2,16 @@ package com.example.movieapp.ui.movieList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.example.domain.model.movie.Movie
 import com.example.movieapp.databinding.MovieListItemBinding
 
 class MovieListAdapter(
-    var movies: List<Movie>,
     private val onItemClick: (Movie) -> Unit,
-    private val onFavoriteClick: (Movie) -> Unit
+    private val onFavoriteClick: (Int, Movie) -> Unit
 ) :
-    RecyclerView.Adapter<MovieListViewHolder>() {
+    ListAdapter<Movie, MovieListViewHolder>(ITEM_COMPARATOR) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder =
         MovieListViewHolder(
             MovieListItemBinding.inflate(
@@ -21,12 +21,22 @@ class MovieListAdapter(
             )
         )
 
-    override fun getItemCount(): Int = movies.size
-
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
+        val item: Movie = getItem(position)
         holder.itemView.setOnClickListener {
-            onItemClick(movies[position])
+            onItemClick(item)
         }
-        holder.bind(movie = movies[position], onFavoriteClick = onFavoriteClick)
+        holder.bind(movie = item, position = position, onFavoriteClick = onFavoriteClick)
+    }
+}
+
+private val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        //TODO
+        return oldItem.id == newItem.id && oldItem.posterPath == newItem.posterPath
     }
 }
