@@ -1,7 +1,7 @@
 package com.example.data.repositories
 
-import com.example.data.MovieApi
-import com.example.data.network.model.API_KEY
+import com.example.data.network.API_KEY
+import com.example.data.network.MovieApi
 import com.example.data.network.model.mappers.toDomain
 import com.example.domain.model.movie.Movie
 import com.example.domain.repositories.MovieRepository

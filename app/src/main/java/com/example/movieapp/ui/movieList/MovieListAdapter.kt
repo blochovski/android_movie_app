@@ -7,7 +7,8 @@ import com.example.domain.model.movie.Movie
 import com.example.movieapp.databinding.MovieListItemBinding
 
 class MovieListAdapter(
-    var movies: List<Movie>
+    var movies: List<Movie>,
+    val onItemClick: (Movie) -> Unit
 ) :
     RecyclerView.Adapter<MovieListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder =
@@ -22,6 +23,9 @@ class MovieListAdapter(
     override fun getItemCount(): Int = movies.size
 
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            onItemClick(movies[position])
+        }
         holder.bind(movie = movies[position])
     }
 }
