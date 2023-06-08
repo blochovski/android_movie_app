@@ -9,25 +9,25 @@ data class Result(
     @Json(name = "adult")
     val adult: Boolean,
     @Json(name = "backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String? = String(),
     @Json(name = "genre_ids")
     val genreIds: List<Int>,
     @Json(name = "id")
     val id: Int,
     @Json(name = "original_language")
-    val originalLanguage: String,
+    val originalLanguage: String? = String(),
     @Json(name = "original_title")
-    val originalTitle: String,
+    val originalTitle: String? = String(),
     @Json(name = "overview")
-    val overview: String,
+    val overview: String? = String(),
     @Json(name = "popularity")
     val popularity: Double,
     @Json(name = "poster_path")
-    val posterPath: String,
+    val posterPath: String? = String(),
     @Json(name = "release_date")
-    val releaseDate: String,
+    val releaseDate: String? = String(),
     @Json(name = "title")
-    val title: String,
+    val title: String? = String(),
     @Json(name = "video")
     val video: Boolean,
     @Json(name = "vote_average")

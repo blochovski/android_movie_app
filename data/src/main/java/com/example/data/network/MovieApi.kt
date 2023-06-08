@@ -8,6 +8,7 @@ interface MovieApi {
 
     @GET(ApiConstants.NOW_PLAYING_MOVIE_ENDPOINT)
     suspend fun getNowPlayingMovies(
-        @Query(ApiParameters.API_KEY) pageToLoad: String = API_KEY,
+        @Query(ApiParameters.PAGE) pageToLoad: Int,
+        @Query(ApiParameters.API_KEY) apiKey: String = API_KEY,
     ): MovieNowPlayingResponse
 }
