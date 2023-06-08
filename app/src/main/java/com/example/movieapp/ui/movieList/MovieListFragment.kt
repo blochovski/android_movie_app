@@ -57,4 +57,8 @@ class MovieListFragment : Fragment() {
     )
 
     private fun onFavoriteClick(movie: Movie) = viewModel.updateMovie(movie)
+
+    fun onMoviesEvent() {
+        viewModel.loadNextMoviesPage()
+    }
 }
