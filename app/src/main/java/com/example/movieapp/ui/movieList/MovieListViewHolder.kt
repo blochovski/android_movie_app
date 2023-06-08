@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.movie.Movie
 import coil.dispose
 import coil.load
-import com.example.data.network.model.ApiConstants
+import com.example.data.network.ApiConstants
 import com.example.movieapp.databinding.MovieListItemBinding
 
 class MovieListViewHolder(private val binding: MovieListItemBinding) :
