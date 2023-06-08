@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/movie_list_fragment" >
+    app:startDestination="@id/movie_list_fragment">
 
     <fragment
         android:id="@+id/movie_list_fragment"
@@ -21,6 +21,11 @@
         android:name="com.example.movieapp.ui.movieDetails.MovieDetailsFragment"
         android:label="movie_details_fragment"
         tools:layout="@layout/fragment_movie_details">
+
+        <argument
+            android:name="movie"
+            app:argType="com.example.domain.model.movie.Movie"
+            app:nullable="false" />
 
         <action
             android:id="@+id/movie_details_fragment_to_movie_list_fragment"
