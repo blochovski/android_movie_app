@@ -7,7 +7,7 @@ fun Result.toDomain() =
     Movie(
         adult = adult,
         backdropPath = backdropPath,
-        genreIds = genreIds,
+//        genreIds = genreIds,
         id = id,
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,
