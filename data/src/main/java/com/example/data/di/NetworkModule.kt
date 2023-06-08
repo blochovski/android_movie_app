@@ -1,7 +1,7 @@
 package com.example.data.di
 
-import com.example.data.MovieApi
-import com.example.data.network.model.ApiConstants
+import com.example.data.network.MovieApi
+import com.example.data.network.ApiConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

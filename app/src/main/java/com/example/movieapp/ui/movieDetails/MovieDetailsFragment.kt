@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.dispose
 import coil.load
-import com.example.data.network.model.ApiConstants
+import com.example.data.network.ApiConstants
 import com.example.domain.model.movie.Movie
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint

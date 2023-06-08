@@ -11,8 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.movie.Movie
 import com.example.movieapp.databinding.FragmentMovieListBinding
-import com.example.movieapp.ui.movieDetails.MovieDetailsFragment
-import com.example.movieapp.ui.movieDetails.MovieDetailsFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,8 +41,7 @@ class MovieListFragment : Fragment() {
 
     private fun observeObservables() {
         viewModel.movies.observe(viewLifecycleOwner) {
-            binding.movieList.adapter = MovieListAdapter(it)
-            navigateToMovieDetails(it.first())
+            binding.movieList.adapter = MovieListAdapter(it, ::navigateToMovieDetails)
         }
     }
 
