@@ -1,4 +1,4 @@
-package com.example.data.network.model
+package com.example.data.network.model.movies
 
 
 import com.squareup.moshi.Json
@@ -10,8 +10,6 @@ data class Result(
     val adult: Boolean,
     @Json(name = "backdrop_path")
     val backdropPath: String? = String(),
-    @Json(name = "genre_ids")
-    val genreIds: List<Int>,
     @Json(name = "id")
     val id: Int,
     @Json(name = "original_language")

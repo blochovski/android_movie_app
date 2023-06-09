@@ -4,8 +4,9 @@ import com.example.data.cache.Cache
 import com.example.data.cache.model.mappers.toEntity
 import com.example.data.network.API_KEY
 import com.example.data.network.MovieApi
-import com.example.data.network.model.mappers.toDomain
-import com.example.data.network.model.mappers.toDomainPaginatedMovies
+import com.example.data.network.model.movies.mappers.toDomain
+import com.example.data.network.model.movies.mappers.toDomainPaginatedMovies
+import com.example.data.network.model.search.mappers.toDomainPaginatedMovies
 import com.example.domain.model.movie.Movie
 import com.example.domain.model.pagination.PaginatedMovies
 import com.example.domain.repositories.MovieRepository
@@ -36,6 +37,17 @@ class MovieRepositoryImpl @Inject constructor(
         val response = network.getNowPlayingMovies(
             apiKey = API_KEY,
             pageToLoad = pageToLoad,
+        )
+        emit(response.toDomainPaginatedMovies())
+    }
+
+    override fun searchMoviesRemotely(
+        pageToLoad: Int,
+        query: String,
+    ): Flow<PaginatedMovies>  = flow {
+        val response = network.searchMovies(
+            query = query,
+            page = pageToLoad,
         )
         emit(response.toDomainPaginatedMovies())
     }

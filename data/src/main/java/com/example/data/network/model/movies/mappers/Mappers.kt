@@ -1,7 +1,7 @@
-package com.example.data.network.model.mappers
+package com.example.data.network.model.movies.mappers
 
-import com.example.data.network.model.MovieNowPlayingResponse
-import com.example.data.network.model.Result
+import com.example.data.network.model.movies.MovieNowPlayingResponse
+import com.example.data.network.model.movies.Result
 import com.example.domain.model.movie.Movie
 import com.example.domain.model.pagination.PaginatedMovies
 import com.example.domain.model.pagination.Pagination
@@ -9,7 +9,6 @@ import com.example.domain.model.pagination.Pagination
 fun Result.toDomain() = Movie(
     adult = adult,
     backdropPath = backdropPath ?: String(),
-//        genreIds = genreIds,
     id = id,
     originalLanguage = originalLanguage ?: String(),
     originalTitle = originalTitle ?: String(),
