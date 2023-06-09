@@ -31,6 +31,7 @@ class MovieListFragmentViewModel
     private val updateMovieUseCase: UpdateMovieUseCase
 ) : ViewModel() {
 
+
     val state: LiveData<MovieListFragmentUiState> get() = _state
     private val _state = MutableLiveData<MovieListFragmentUiState>()
 
