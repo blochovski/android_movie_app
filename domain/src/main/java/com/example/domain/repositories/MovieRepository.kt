@@ -11,6 +11,8 @@ interface MovieRepository {
             pageToLoad: Int,
             numberOfItems: Int
         ): Flow<PaginatedMovies>
+
+        fun searchMoviesRemotely(pageToLoad: Int, query: String): Flow<PaginatedMovies>
     }
 
     interface Local {

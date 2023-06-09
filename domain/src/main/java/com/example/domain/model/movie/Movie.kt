@@ -5,7 +5,6 @@ import java.io.Serializable
 open class Movie(
     val adult: Boolean,
     val backdropPath: String,
-//    val genreIds: List<Int>,
     val id: Int,
     val originalLanguage: String,
     val originalTitle: String,
@@ -23,7 +22,6 @@ open class Movie(
 object EmptyMovie : Movie(
     adult = false,
     backdropPath = String(),
-//    genreIds = listOf(),
     id = 0,
     originalLanguage = String(),
     originalTitle = String(),
