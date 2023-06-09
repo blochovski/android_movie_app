@@ -7,7 +7,6 @@ fun CachedMovie.toDomain() =
     Movie(
         adult = adult,
         backdropPath = backdropPath,
-//        genreIds = genreIds,
         id = id,
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,
@@ -26,7 +25,6 @@ fun Movie.toEntity() =
     CachedMovie(
         adult = adult,
         backdropPath = backdropPath,
-//        genreIds = genreIds,
         id = id,
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,

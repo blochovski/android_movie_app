@@ -1,4 +1,4 @@
-package com.example.data.network.model
+package com.example.data.network.model.movies
 
 
 import com.squareup.moshi.Json

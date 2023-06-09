@@ -10,5 +10,9 @@ sealed interface MovieListFragmentUiState {
         val movies: List<Movie> = emptyList(),
     ) : MovieListFragmentUiState
 
+    class Searching(
+        val movies: List<Movie> = emptyList(),
+    ) : MovieListFragmentUiState
+
     class Error(val error: Throwable) : MovieListFragmentUiState
 }

@@ -10,20 +10,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b62fa940-1ce7-438c-abc8-9fe517011604" name="Changes" comment="temp commit">
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/com/example/exceptions/NoMoreMoviesException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/sugestion.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/search/MovieSearchResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/search/Result.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/search/mappers/Mappers.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/SearchMoviesRemotelyUseCase.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentUiState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentUiState.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListViewHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListViewHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_movie_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_movie_list.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/ApiConstants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/ApiConstants.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/MovieApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/MovieApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/Result.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/Result.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/mappers/Mappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/mappers/Mappers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/Dates.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/Dates.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/MovieNowPlayingResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/MovieNowPlayingResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/Result.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/Result.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/mappers/Mappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/mappers/Mappers.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/GetNextPageOfMovies.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/GetNextPageOfMovies.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/repositories/MovieRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/repositories/MovieRepository.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +64,9 @@
         <option value="Class" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Sealed Interface" />
+        <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
@@ -121,22 +127,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;PROJECT_TRUSTED_KEY&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;android-custom-viewC:/Users/Piotr/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.1.0/f2bdf79e1977939817f54a9d3e2f6bc52b63bdd0/recyclerview-1.1.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_SELECTED&quot;: &quot;RecyclerView&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Piotr/AndroidStudioProjects/movieapp&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.43781725&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "PROJECT_TRUSTED_KEY": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "android-custom-viewC:/Users/Piotr/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.6.1/ace9a78b961165396147e8691faa18c1b0e48e20/appcompat-1.6.1-sources.jar!/androidx/appcompat/widget/SearchView.java_SELECTED": "SearchView",
+    "android-custom-viewC:/Users/Piotr/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.1.0/f2bdf79e1977939817f54a9d3e2f6bc52b63bdd0/recyclerview-1.1.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_SELECTED": "RecyclerView",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "C:/Users/Piotr/AndroidStudioProjects/movieapp",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.43781725"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.example.data.network.model.movies" />
       <recent name="com.example.exceptions" />
     </key>
   </component>
@@ -223,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686254020685</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="temp commit">
+      <created>1686322820381</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1686322820381</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -237,7 +252,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="task_3" />
+                        <option value="task_5" />
                       </list>
                     </value>
                   </entry>
@@ -258,21 +273,56 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/GetNextPageOfMovies.kt</url>
-          <line>20</line>
-          <option name="timeStamp" value="11" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt</url>
+          <line>156</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt</url>
-          <line>39</line>
-          <option name="timeStamp" value="12" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt</url>
+          <line>157</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt</url>
-          <line>28</line>
-          <option name="timeStamp" value="13" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
+          <line>98</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
+          <line>175</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
+          <line>174</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
+          <line>113</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
+          <line>99</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
+          <line>92</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt</url>
+          <line>109</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.example.movieapp.ui.movieList.MovieListFragment" memberName="viewModel" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>
