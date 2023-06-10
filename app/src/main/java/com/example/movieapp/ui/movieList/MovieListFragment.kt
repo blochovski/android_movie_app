@@ -56,11 +56,9 @@ class MovieListFragment : Fragment() {
         observeViewStateUpdates(adapter)
     }
 
-    private fun observeViewStateUpdates(adapter: MovieListAdapter) {
-        viewModel.state.observe(viewLifecycleOwner) {
-            updateScreenState(it, adapter)
-        }
-    }
+    private fun newAdapter(): MovieListAdapter =
+        MovieListAdapter(::navigateToMovieDetails, ::onFavoriteClick)
+
 
     private fun initMovieList(movieListAdapter: MovieListAdapter) = binding.movieList.apply {
         layoutManager = LinearLayoutManager(context)
@@ -69,6 +67,16 @@ class MovieListFragment : Fragment() {
         addOnScrollListener(
             newInfiniteScrollListener(layoutManager as LinearLayoutManager)
         )
+    }
+
+    private fun newInfiniteScrollListener(
+        layoutManager: LinearLayoutManager
+    ): RecyclerView.OnScrollListener {
+        return object : InfiniteScrollListener(layoutManager, PAGE_SIZE) {
+            override fun loadMoreItems() = onMoviesEvent()
+            override fun isLoading(): Boolean = viewModel.isLoadingMoreMovies
+            override fun isLastPage(): Boolean = viewModel.isLastPage
+        }
     }
 
     private fun initSearchView() = binding.searchView.apply {
@@ -118,38 +126,24 @@ class MovieListFragment : Fragment() {
             })
     }
 
+    private fun observeViewStateUpdates(adapter: MovieListAdapter) {
+        viewModel.state.observe(viewLifecycleOwner) {
+            updateScreenState(it, adapter)
+        }
+    }
+
+    private fun onFavoriteClick(index: Int, movie: Movie) {
+        movie.isFavorite = !movie.isFavorite
+        binding.movieList.adapter?.apply { notifyItemChanged(index) }
+        viewModel.updateMovie(movie)
+    }
+
     @SuppressLint("Range")
     private fun onSuggestion(position: Int, cursorAdapter: CursorAdapter){
         val cursor = (binding.searchView.suggestionsAdapter.getItem(position) as Cursor)
         val selection = cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
         binding.searchView.setQuery(selection, false)
         viewModel.searchSuggestionRemotely(cursorAdapter.cursor.getString(position))
-    }
-
-    private fun newInfiniteScrollListener(
-        layoutManager: LinearLayoutManager
-    ): RecyclerView.OnScrollListener {
-        return object : InfiniteScrollListener(layoutManager, PAGE_SIZE) {
-            override fun loadMoreItems() = onMoviesEvent()
-            override fun isLoading(): Boolean = viewModel.isLoadingMoreMovies
-            override fun isLastPage(): Boolean = viewModel.isLastPage
-        }
-    }
-
-    private fun newAdapter(): MovieListAdapter =
-        MovieListAdapter(::navigateToMovieDetails, ::onFavoriteClick)
-
-
-    private fun navigateToMovieDetails(movie: Movie) = navController.navigate(
-        MovieListFragmentDirections.actionMovieListFragmentToMovieDetailsFragment(
-            movie = movie
-        )
-    )
-
-    private fun onFavoriteClick(index: Int, movie: Movie) {
-        movie.isFavorite = !movie.isFavorite
-        binding.movieList.adapter?.apply { notifyItemChanged(index) }
-        viewModel.updateMovie(movie)
     }
 
     fun onMoviesEvent() {
@@ -185,6 +179,12 @@ class MovieListFragment : Fragment() {
             }
         }
     }
+
+    private fun navigateToMovieDetails(movie: Movie) = navController.navigate(
+        MovieListFragmentDirections.actionMovieListFragmentToMovieDetailsFragment(
+            movie = movie
+        )
+    )
 
     companion object {
         const val PAGE_SIZE = 20

@@ -10,7 +10,6 @@ import com.example.domain.usecases.GetCachedMoviesUseCase
 import com.example.domain.usecases.GetMoviesUseCase
 import com.example.domain.usecases.GetNextPageOfMovies
 import com.example.domain.usecases.SearchMoviesRemotelyUseCase
-import com.example.domain.usecases.StoreMoviesUseCase
 import com.example.domain.usecases.UpdateMovieUseCase
 import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Error
 import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Loaded
@@ -31,7 +30,6 @@ class MovieListFragmentViewModel
     private val getMoviesUseCase: GetMoviesUseCase,
     private val getNextPageOfMovies: GetNextPageOfMovies,
     private val getCachedMoviesUseCase: GetCachedMoviesUseCase,
-    private val storeMoviesUseCase: StoreMoviesUseCase,
     private val updateMovieUseCase: UpdateMovieUseCase,
     private val searchMoviesRemotelyUseCase: SearchMoviesRemotelyUseCase
 ) : ViewModel() {
@@ -54,29 +52,6 @@ class MovieListFragmentViewModel
         collectMoviesUpdates()
     }
 
-    private fun collectMoviesUpdates() {
-        currentPage = 0
-        viewModelScope.launch(IO) {
-            _state.postValue(Loading)
-            combine(
-                getCachedMoviesUseCase(), getMoviesUseCase()
-            ) { cached, remote ->
-                storeMoviesUseCase(remote)
-                val cachedIds = cached.map { it.id }
-                remote.map { movie ->
-                    if (movie.id in cachedIds) movie.apply {
-                        isFavorite = cached.first { id == it.id }.isFavorite
-                    }
-                }
-                remote
-            }.catch { error ->
-                onError(error)
-            }.collect { movies ->
-                onNewMoviesList(movies)
-            }
-        }
-    }
-
     private fun onNewMoviesList(localMovies: List<Movie>) {
         val currentList = movies
         val newMovies = localMovies.subtract(currentList.toSet())
@@ -89,24 +64,70 @@ class MovieListFragmentViewModel
         )
     }
 
+    private fun onRemoteSearchResults(localMovies: List<Movie>) {
+        val currentList = movies
+        val newMovies = localMovies.subtract(currentList.toSet())
+        val updatedList = currentList + newMovies
+        movies = updatedList
+        suggestions = movies.map { it.title }
+        _state.postValue(
+            Searching(
+                updatedList,
+            )
+        )
+    }
+
     private fun onError(error: Throwable) {
         _state.postValue(
             Error(error)
         )
     }
 
+    private fun collectMoviesUpdates() {
+        currentPage = 0
+        viewModelScope.launch(IO) {
+            _state.postValue(Loading)
+            combine(
+                getCachedMoviesUseCase(), getMoviesUseCase()
+            ) { cached, remote ->
+                initIsFavoriteProperty(cached, remote)
+            }.catch { error ->
+                onError(error)
+            }.collect { movies ->
+                onNewMoviesList(movies)
+            }
+        }
+    }
+
+    private fun initIsFavoriteProperty(cached: List<Movie>, remote: List<Movie>): List<Movie> {
+        val cachedIds = cached.map { it.id }
+        remote.map { movie ->
+            if (movie.id in cachedIds) movie.apply {
+                isFavorite = cached.first { id == it.id }.isFavorite
+            }
+        }
+        return remote
+    }
+
     fun loadNextMoviesPage() {
         _state.postValue(Loading)
         isLoadingMoreMovies = true
         viewModelScope.launch(IO) {
-            getNextPageOfMovies(++currentPage).catch { error ->
-                onError(error)
-            }.collect {
-                val (movies, pagination) = it
-                onNewMoviesList(movies)
-                updatePaginationInfo(pagination)
-                isLoadingMoreMovies = false
+            combine(
+                getCachedMoviesUseCase(),
+                getNextPageOfMovies(++currentPage)
+            ) { cached, paginated ->
+                initIsFavoriteProperty(cached, paginated.movies)
+                paginated
             }
+                .catch { error ->
+                    onError(error)
+                }.collect {
+                    val (movies, pagination) = it
+                    onNewMoviesList(movies)
+                    updatePaginationInfo(pagination)
+                    isLoadingMoreMovies = false
+                }
         }
     }
 
@@ -118,9 +139,15 @@ class MovieListFragmentViewModel
         _state.postValue(Loading)
         isLoadingMoreMovies = true
         val job = viewModelScope.launch(IO) {
-            searchMoviesRemotelyUseCase(
-                pageToLoad = ++currentPage, query = query
-            ).onEach {
+            combine(
+                getCachedMoviesUseCase(),
+                searchMoviesRemotelyUseCase(
+                    pageToLoad = ++currentPage, query = query
+                )
+            ) { cached, paginated ->
+                initIsFavoriteProperty(cached, paginated.movies)
+                paginated
+            }.onEach {
                 runningJobs.map { it.cancel() }
             }.catch { error ->
                 onError(error)
@@ -145,18 +172,6 @@ class MovieListFragmentViewModel
         searchRemotely(query = suggestion)
     }
 
-    private fun onRemoteSearchResults(localMovies: List<Movie>) {
-        val currentList = movies
-        val newMovies = localMovies.subtract(currentList.toSet())
-        val updatedList = currentList + newMovies
-        movies = updatedList
-        suggestions = movies.map { it.title }
-        _state.postValue(
-            Searching(
-                updatedList,
-            )
-        )
-    }
 
     private fun updatePaginationInfo(pagination: Pagination) {
         currentPage = pagination.currentPage
