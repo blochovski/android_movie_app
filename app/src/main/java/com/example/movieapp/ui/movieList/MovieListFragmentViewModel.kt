@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.model.movie.Movie
 import com.example.domain.model.pagination.Pagination
 import com.example.domain.usecases.GetCachedMoviesUseCase
-import com.example.domain.usecases.GetMoviesUseCase
 import com.example.domain.usecases.GetNextPageOfMovies
 import com.example.domain.usecases.SearchMoviesRemotelyUseCase
 import com.example.domain.usecases.UpdateMovieUseCase
+import com.example.exceptions.NoMoreMoviesException
 import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Error
 import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Loaded
 import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Loading
@@ -20,14 +20,13 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieListFragmentViewModel
 @Inject constructor(
-    private val getMoviesUseCase: GetMoviesUseCase,
     private val getNextPageOfMovies: GetNextPageOfMovies,
     private val getCachedMoviesUseCase: GetCachedMoviesUseCase,
     private val updateMovieUseCase: UpdateMovieUseCase,
@@ -46,8 +45,7 @@ class MovieListFragmentViewModel
     private var query: String = String()
 
     init {
-        _state.value = Loading
-        collectMoviesUpdates()
+        loadNextMoviesPage(isLoadingMoreMovies = false)
     }
 
     private fun onNewMoviesList(localMovies: List<Movie>) {
@@ -75,24 +73,42 @@ class MovieListFragmentViewModel
     }
 
     private fun onError(error: Throwable) {
+        if (error is NoMoreMoviesException)
+            isLoadingMoreMovies = false
+        isLastPage = true
         _state.postValue(
             Error(error)
         )
     }
 
-    private fun collectMoviesUpdates() {
-        currentPage = 0
-        viewModelScope.launch(IO) {
-            _state.postValue(Loading)
+    fun loadNextMoviesPage(isLoadingMoreMovies: Boolean) {
+        _state.postValue(Loading)
+        this@MovieListFragmentViewModel.isLoadingMoreMovies = isLoadingMoreMovies
+        val job = viewModelScope.launch(IO) {
+
+            runningJobs.filterNot { it == this.coroutineContext.job }.onEach {
+                it.cancel()
+            }
             combine(
-                getCachedMoviesUseCase(), getMoviesUseCase()
-            ) { cached, remote ->
-                initIsFavoriteProperty(cached, remote)
+                getCachedMoviesUseCase(),
+                getNextPageOfMovies(++currentPage)
+            ) { cached, paginated ->
+                initIsFavoriteProperty(cached, paginated.movies)
+                paginated
             }.catch { error ->
                 onError(error)
-            }.collect { movies ->
+            }.collect {
+                val (movies, pagination) = it
                 onNewMoviesList(movies)
+                updatePaginationInfo(pagination)
+                this@MovieListFragmentViewModel.isLoadingMoreMovies = false
             }
+        }
+
+        runningJobs.add(job)
+        job.invokeOnCompletion {
+            it?.printStackTrace()
+            runningJobs.remove(job)
         }
     }
 
@@ -106,36 +122,19 @@ class MovieListFragmentViewModel
         return remote
     }
 
-    fun loadNextMoviesPage() {
-        _state.postValue(Loading)
-        isLoadingMoreMovies = true
-        viewModelScope.launch(IO) {
-            combine(
-                getCachedMoviesUseCase(),
-                getNextPageOfMovies(++currentPage)
-            ) { cached, paginated ->
-                initIsFavoriteProperty(cached, paginated.movies)
-                paginated
-            }
-                .catch { error ->
-                    onError(error)
-                }.collect {
-                    val (movies, pagination) = it
-                    onNewMoviesList(movies)
-                    updatePaginationInfo(pagination)
-                    isLoadingMoreMovies = false
-                }
-        }
+
+    fun searchRemotelyNextMoviesPage() {
+        searchRemotely(query, isLoadingMoreMovies = true)
     }
 
-    fun searchRemotely() {
-        searchRemotely(query)
-    }
-
-    private fun searchRemotely(query: String) {
+    private fun searchRemotely(query: String, isLoadingMoreMovies: Boolean) {
         _state.postValue(Loading)
-        isLoadingMoreMovies = true
+        this@MovieListFragmentViewModel.isLoadingMoreMovies = isLoadingMoreMovies
         val job = viewModelScope.launch(IO) {
+
+            runningJobs.filterNot { it == this.coroutineContext.job }.onEach {
+                it.cancel()
+            }
             combine(
                 getCachedMoviesUseCase(),
                 searchMoviesRemotelyUseCase(
@@ -144,15 +143,13 @@ class MovieListFragmentViewModel
             ) { cached, paginated ->
                 initIsFavoriteProperty(cached, paginated.movies)
                 paginated
-            }.onEach {
-                runningJobs.map { it.cancel() }
             }.catch { error ->
                 onError(error)
             }.collect {
                 val (movies, pagination) = it
                 onRemoteSearchResults(movies)
                 updatePaginationInfo(pagination)
-                isLoadingMoreMovies = false
+                this@MovieListFragmentViewModel.isLoadingMoreMovies = false
             }
         }
 
@@ -166,7 +163,7 @@ class MovieListFragmentViewModel
     fun searchSuggestionRemotely(suggestion: String) {
         movies = emptyList()
         resetPagination()
-        searchRemotely(query = suggestion)
+        searchRemotely(query = suggestion, isLoadingMoreMovies = false)
     }
 
 
@@ -185,16 +182,20 @@ class MovieListFragmentViewModel
         if (query.isEmpty()) {
             movies = listOf()
             resetPagination()
-            collectMoviesUpdates()
+            loadNextMoviesPage(isLoadingMoreMovies = false)
+            this@MovieListFragmentViewModel.query = query
             return
         }
 
         if (this@MovieListFragmentViewModel.query != query) {
             movies = listOf()
             resetPagination()
+            searchRemotely(query, isLoadingMoreMovies = false)
+        } else {
+            searchRemotely(query, isLoadingMoreMovies = true)
         }
+
         this@MovieListFragmentViewModel.query = query
-        searchRemotely(query)
     }
 
     private fun resetPagination() {

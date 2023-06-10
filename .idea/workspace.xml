@@ -9,25 +9,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b62fa940-1ce7-438c-abc8-9fe517011604" name="Changes" comment="temp commit">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/sugestion.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/search/MovieSearchResponse.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/search/Result.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/search/mappers/Mappers.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/SearchMoviesRemotelyUseCase.kt" afterDir="false" />
+    <list default="true" id="b62fa940-1ce7-438c-abc8-9fe517011604" name="Changes" comment="Fix suggestions functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentUiState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentUiState.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_movie_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_movie_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/ApiConstants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/ApiConstants.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/MovieApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/MovieApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/Dates.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/Dates.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/MovieNowPlayingResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/MovieNowPlayingResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/Result.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/Result.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/mappers/Mappers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/model/movies/mappers/Mappers.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/repositories/MovieRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/repositories/MovieRepository.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +98,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="develop" />
+        <entry key="$PROJECT_DIR$" value="test" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -121,6 +106,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2Qv4vyWKbkd6dzAyzpLCKSSpKUG" />
   <component name="ProjectViewState">
@@ -139,7 +127,8 @@
     "last_opened_file_path": "C:/Users/Piotr/AndroidStudioProjects/movieapp",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.43781725"
+    "project.structure.side.proportion": "0.43781725",
+    "run.code.analysis.last.selected.profile": "pProject Default"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -238,7 +227,21 @@
       <option name="project" value="LOCAL" />
       <updated>1686322820381</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fix is favorite functionality">
+      <created>1686396709252</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1686396709252</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix suggestions functionality">
+      <created>1686398577827</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1686398577827</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -252,7 +255,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="task_5" />
+                        <option value="develop" />
                       </list>
                     </value>
                   </entry>
@@ -267,55 +270,22 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add Favorite functionality" />
     <MESSAGE value="temp commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="temp commit" />
+    <MESSAGE value="Fix is favorite functionality" />
+    <MESSAGE value="Fix suggestions functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix suggestions functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt</url>
-          <line>156</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt</url>
-          <line>157</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
-          <line>98</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
-          <line>175</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
-          <line>174</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
-          <line>113</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
-          <line>99</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
-          <line>92</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt</url>
           <line>109</line>
           <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
+          <line>79</line>
+          <option name="timeStamp" value="36" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

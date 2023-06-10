@@ -140,8 +140,8 @@ class MovieListFragment : Fragment() {
 
     fun onMoviesEvent() {
         when (viewModel.state.value) {
-            is Loaded -> viewModel.loadNextMoviesPage()
-            is Searching -> viewModel.searchRemotely()
+            is Loaded -> viewModel.loadNextMoviesPage(isLoadingMoreMovies = true)
+            is Searching -> viewModel.searchRemotelyNextMoviesPage()
             else -> Unit
         }
     }
