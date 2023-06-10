@@ -12,17 +12,17 @@ import com.example.movieapp.databinding.MovieListItemBinding
 class MovieListViewHolder(private val binding: MovieListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(movie: Movie, position: Int, onFavoriteClick: (Int, Movie) -> Unit) = binding.apply {
-        with(movie) {
-            isFavouriteInList.setOnClickListener {
-                onFavoriteClick(position, movie)
-            }
-            setIsFavouriteDrawable(movie)
-            with(poster) {
-                dispose()
-                load("${ApiConstants.IMAGES_BASE_URL}$posterPath") { crossfade(true) }
-            }
-            movieTitle.text = title
+        isFavouriteInList.setOnClickListener {
+            onFavoriteClick(position, movie)
         }
+        setIsFavouriteDrawable(movie)
+        with(poster) {
+            dispose()
+            load("${ApiConstants.IMAGES_BASE_URL}${movie.posterPath}") { crossfade(true) }
+        }
+        movieTitle.text = movie.title
+        releaseDate.text = movie.releaseDate
+        voteAverage.text = movie.voteAverage.toString()
     }
 
     private fun setIsFavouriteDrawable(movie: Movie) = binding.isFavouriteInList.setImageDrawable(

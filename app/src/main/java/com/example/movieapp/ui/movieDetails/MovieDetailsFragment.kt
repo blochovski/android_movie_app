@@ -1,6 +1,7 @@
 package com.example.movieapp.ui.movieDetails
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +42,6 @@ class MovieDetailsFragment : Fragment() {
     ): View = binding.root
 
     private fun initBinding(movie: Movie) = binding.apply {
-        detailsMovieTitle.text = movie.title
         with(detailsPoster) {
             dispose()
             load("${ApiConstants.IMAGES_BASE_URL}${movie.posterPath}") { crossfade(true) }
@@ -52,17 +52,22 @@ class MovieDetailsFragment : Fragment() {
             viewModel.updateMovie(movie)
             setIsFavouriteDrawable(movie)
         }
+        detailsMovieTitle.text = movie.title
+        detailsReleaseDate.text = movie.releaseDate
+        detailsVoteAverage.text = movie.voteAverage.toString()
+        detailsMovieOverview.text = movie.overview
     }
 
     private fun initToolbar() = binding.detailsToolbar.apply {
         navigationIcon =
             getDrawable(
                 requireContext(),
-                androidx.appcompat.R.drawable.abc_ic_ab_back_material
+                R.drawable.back
             )
         setNavigationOnClickListener {
             navigateBackToMovieList()
         }
+        background = ColorDrawable(context.getColor(R.color.card_background))
     }
 
     private fun observeObservables() {
@@ -75,7 +80,6 @@ class MovieDetailsFragment : Fragment() {
         getDrawable(
             requireContext(),
             if (movie.isFavorite) R.drawable.favorite_black_24dp else R.drawable.favorite_border_black_24dp
-
         )
     )
 

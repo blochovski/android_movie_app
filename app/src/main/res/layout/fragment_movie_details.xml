@@ -1,52 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.movieDetails.MovieDetailsFragment">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_marginTop="1dp"
-        android:id="@+id/details_toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:context=".ui.movieDetails.MovieDetailsFragment">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/details_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/is_favorite_button"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                tools:src="@drawable/favorite_border_black_24dp" />
+        </androidx.appcompat.widget.Toolbar>
 
         <ImageView
-            android:id="@+id/is_favorite_button"
-            android:layout_marginEnd="10dp"
-            android:layout_gravity="end"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            tools:src="@drawable/favorite_border_black_24dp"/>
-    </androidx.appcompat.widget.Toolbar>
+            android:id="@+id/details_poster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:layout_constraintTop_toBottomOf="@id/details_toolbar" />
 
-    <ImageView
-        android:layout_marginTop="10dp"
-        android:id="@+id/details_poster"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/details_toolbar" />
+        <TextView
+            android:id="@+id/details_movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/details_fragment_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/details_poster" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:id="@+id/details_movie_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/details_poster" />
+        <TextView
+            android:id="@+id/details_release_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/details_fragment_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@id/details_movie_title" />
 
-    <TextView
-        android:id="@+id/details_movie_overview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/details_movie_title" />
+        <TextView
+            android:id="@+id/details_vote_average"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/details_fragment_horizontal_margin"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@id/details_release_date" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/details_movie_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/details_fragment_horizontal_margin"
+            android:layout_marginVertical="20dp"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/details_vote_average" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
