@@ -34,8 +34,6 @@ class MovieListFragmentViewModel
     private val searchMoviesRemotelyUseCase: SearchMoviesRemotelyUseCase
 ) : ViewModel() {
 
-    var suggestions = listOf<String>()
-        private set
     val state: LiveData<MovieListFragmentUiState> get() = _state
     private val _state = MutableLiveData<MovieListFragmentUiState>()
     private var movies = listOf<Movie>()
@@ -69,7 +67,6 @@ class MovieListFragmentViewModel
         val newMovies = localMovies.subtract(currentList.toSet())
         val updatedList = currentList + newMovies
         movies = updatedList
-        suggestions = movies.map { it.title }
         _state.postValue(
             Searching(
                 updatedList,
