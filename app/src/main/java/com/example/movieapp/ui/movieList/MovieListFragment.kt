@@ -90,19 +90,11 @@ class MovieListFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 viewModel.updateQuery(newText.orEmpty())
-                val cursor =
-                    MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
 
-                query?.let {
-                    viewModel.suggestions.forEachIndexed { index, suggestion ->
-                        if (suggestion.contains(query, true))
-                            cursor.addRow(arrayOf(index, suggestion))
-                    }
-                }
-                suggestionsAdapter.changeCursor(cursor)
                 return true
             }
         })
+
         suggestionsAdapter = SimpleCursorAdapter(
             context,
             android.R.layout.simple_list_item_1,
@@ -115,12 +107,12 @@ class MovieListFragment : Fragment() {
         setOnSuggestionListener(
             object : SearchView.OnSuggestionListener {
                 override fun onSuggestionSelect(position: Int): Boolean {
-                    onSuggestion(position, suggestionsAdapter)
+                    onSuggestion(position)
                     return true
                 }
 
                 override fun onSuggestionClick(position: Int): Boolean {
-                    onSuggestion(position, suggestionsAdapter)
+                    onSuggestion(position)
                     return true
                 }
             })
@@ -139,11 +131,11 @@ class MovieListFragment : Fragment() {
     }
 
     @SuppressLint("Range")
-    private fun onSuggestion(position: Int, cursorAdapter: CursorAdapter){
+    private fun onSuggestion(position: Int) {
         val cursor = (binding.searchView.suggestionsAdapter.getItem(position) as Cursor)
         val selection = cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
         binding.searchView.setQuery(selection, false)
-        viewModel.searchSuggestionRemotely(cursorAdapter.cursor.getString(position))
+        viewModel.searchSuggestionRemotely(selection)
     }
 
     fun onMoviesEvent() {
@@ -166,6 +158,21 @@ class MovieListFragment : Fragment() {
             is Searching -> {
                 binding.progressBar.isVisible = false
                 adapter.submitList(state.movies)
+
+                binding.searchView.apply {
+                    val cursor =
+                        MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
+
+                    query?.let {
+                        state.movies
+                            .map { it.title }
+                            .forEachIndexed { index, suggestion ->
+                                if (suggestion.contains(query, true))
+                                    cursor.addRow(arrayOf(index, suggestion))
+                            }
+                    }
+                    suggestionsAdapter.changeCursor(cursor)
+                }
             }
 
             is Loaded -> {
