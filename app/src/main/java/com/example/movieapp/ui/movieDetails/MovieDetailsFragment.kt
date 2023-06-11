@@ -13,10 +13,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import coil.dispose
 import coil.load
-import com.example.data.network.ApiConstants
 import com.example.domain.model.movie.Movie
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
+import com.pibi.movieApp.network.ApiConstants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
