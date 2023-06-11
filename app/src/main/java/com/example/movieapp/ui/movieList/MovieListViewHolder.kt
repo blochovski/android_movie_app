@@ -1,6 +1,7 @@
 package com.example.movieapp.ui.movieList
 
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.dispose
 import coil.load
@@ -16,10 +17,16 @@ class MovieListViewHolder(private val binding: MovieListItemBinding) :
             onFavoriteClick(position, movie)
         }
         setIsFavouriteDrawable(movie)
-        with(poster) {
-            dispose()
-            load("${IMAGES_BASE_URL}${movie.posterPath}") { crossfade(true) }
+
+        if (movie.posterPath.isEmpty()) {
+            poster.isVisible = false
+        } else{
+            with(poster) {
+                dispose()
+                load("${IMAGES_BASE_URL}${movie.posterPath}") { crossfade(true) }
+            }
         }
+
         movieTitle.text = movie.title
         releaseDate.text = movie.releaseDate
         voteAverage.text = movie.voteAverage.toString()
