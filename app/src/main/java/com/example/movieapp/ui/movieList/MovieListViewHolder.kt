@@ -4,10 +4,10 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import coil.dispose
 import coil.load
-import com.example.data.network.ApiConstants
 import com.example.domain.model.movie.Movie
 import com.example.movieapp.R
 import com.example.movieapp.databinding.MovieListItemBinding
+import com.pibi.movieApp.network.ApiConstants.IMAGES_BASE_URL
 
 class MovieListViewHolder(private val binding: MovieListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -18,7 +18,7 @@ class MovieListViewHolder(private val binding: MovieListItemBinding) :
         setIsFavouriteDrawable(movie)
         with(poster) {
             dispose()
-            load("${ApiConstants.IMAGES_BASE_URL}${movie.posterPath}") { crossfade(true) }
+            load("${IMAGES_BASE_URL}${movie.posterPath}") { crossfade(true) }
         }
         movieTitle.text = movie.title
         releaseDate.text = movie.releaseDate

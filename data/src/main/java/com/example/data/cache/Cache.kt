@@ -1,13 +1,13 @@
 package com.example.data.cache
 
-import com.example.data.cache.model.CachedMovie
+import com.example.domain.model.movie.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface Cache {
 
-    fun getMovies(): Flow<List<CachedMovie>>
+    fun getMovies(): Flow<List<Movie>>
 
-    fun updateMovie(movie: CachedMovie)
+    fun updateMovie(movie: Movie)
 
-    fun storeMovies(movies: Array<CachedMovie>)
+    fun storeMovies(movies: Array<Movie>)
 }
