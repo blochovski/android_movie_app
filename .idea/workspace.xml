@@ -12,13 +12,24 @@
     <list default="true" id="b62fa940-1ce7-438c-abc8-9fe517011604" name="Changes" comment="Architecture refactor">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieDetails/MovieDetailsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieDetails/MovieDetailsFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/Network.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/network/Network.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/data/src/main/java/com/example/data/repositories/MovieRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/repositories/MovieRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/repositories/MovieRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/GetMoviesUseCase.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/GetNextPageOfMovies.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/GetPageOfMovies.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/StoreMoviesUseCase.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/UpdateMovieUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/domain/src/main/java/com/example/domain/usecases/UpdateMovieUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/src/main/java/com/pibi/movieApp/network/RetrofitNetwork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/network/src/main/java/com/pibi/movieApp/network/RetrofitNetwork.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[3673f54b]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\piotr\.android\avd\Pixel_6_Pro_API_33.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -116,22 +127,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "PROJECT_TRUSTED_KEY": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "android-custom-viewC:/Users/Piotr/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.6.1/ace9a78b961165396147e8691faa18c1b0e48e20/appcompat-1.6.1-sources.jar!/androidx/appcompat/widget/SearchView.java_SELECTED": "SearchView",
-    "android-custom-viewC:/Users/Piotr/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.1.0/f2bdf79e1977939817f54a9d3e2f6bc52b63bdd0/recyclerview-1.1.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_SELECTED": "RecyclerView",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "C:/Users/Piotr/AndroidStudioProjects/temp/android_movie_app",
-    "project.structure.last.edited": "Dependencies",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.43781725",
-    "run.code.analysis.last.selected.profile": "pProject Default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;PROJECT_TRUSTED_KEY&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;android-custom-viewC:/Users/Piotr/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.6.1/ace9a78b961165396147e8691faa18c1b0e48e20/appcompat-1.6.1-sources.jar!/androidx/appcompat/widget/SearchView.java_SELECTED&quot;: &quot;SearchView&quot;,
+    &quot;android-custom-viewC:/Users/Piotr/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.1.0/f2bdf79e1977939817f54a9d3e2f6bc52b63bdd0/recyclerview-1.1.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_SELECTED&quot;: &quot;RecyclerView&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/piotr/AndroidStudioProjects/Google-demo-apps/nowinandroid&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Dependencies&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.43781725&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;
   }
-}]]></component>
+}</component>
   <component name="PsdUISettings">
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
@@ -339,11 +350,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragment.kt</url>
-          <line>109</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/movieapp/ui/movieList/MovieListFragmentViewModel.kt</url>
           <line>79</line>

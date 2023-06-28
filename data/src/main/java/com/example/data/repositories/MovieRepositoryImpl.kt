@@ -15,13 +15,12 @@ class MovieRepositoryImpl @Inject constructor(
     private val network: Network,
     private val cache: Cache
 ) : MovieRepository.Remote, MovieRepository.Local {
-    override fun getMovies(): Flow<List<Movie>> = network.getMovies()
 
-    override fun getNextMoviesPage(
+    override fun getNowPlayingMoviesPage(
         pageToLoad: Int,
         numberOfItems: Int
     ): Flow<PaginatedMovies> =
-        network.getNowPlayingMovies(pageToLoad = pageToLoad)
+        network.getNowPlayingMoviesPage(pageToLoad = pageToLoad)
 
     override fun searchMoviesRemotely(
         pageToLoad: Int,
@@ -35,5 +34,5 @@ class MovieRepositoryImpl @Inject constructor(
     override fun storeMovies(movies: List<Movie>) =
         cache.storeMovies(movies.toTypedArray())
 
-    override fun updateMovie(movie: Movie) = cache.updateMovie(movie)
+    override fun updateCachedMovie(movie: Movie) = cache.updateMovie(movie)
 }

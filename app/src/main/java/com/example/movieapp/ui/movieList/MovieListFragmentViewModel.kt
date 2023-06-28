@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.movie.Movie
+import com.example.domain.model.pagination.PaginatedMovies
 import com.example.domain.model.pagination.Pagination
 import com.example.domain.usecases.GetCachedMoviesUseCase
-import com.example.domain.usecases.GetNextPageOfMovies
+import com.example.domain.usecases.GetPageOfMovies
 import com.example.domain.usecases.SearchMoviesRemotelyUseCase
 import com.example.domain.usecases.UpdateMovieUseCase
 import com.example.exceptions.NoMoreMoviesException
@@ -18,6 +19,7 @@ import com.example.movieapp.ui.movieList.MovieListFragmentUiState.Searching
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.job
@@ -27,7 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieListFragmentViewModel
 @Inject constructor(
-    private val getNextPageOfMovies: GetNextPageOfMovies,
+    private val getNextPageOfMovies: GetPageOfMovies,
     private val getCachedMoviesUseCase: GetCachedMoviesUseCase,
     private val updateMovieUseCase: UpdateMovieUseCase,
     private val searchMoviesRemotelyUseCase: SearchMoviesRemotelyUseCase
@@ -48,10 +50,14 @@ class MovieListFragmentViewModel
         loadNextMoviesPage(isLoadingMoreMovies = false)
     }
 
+    fun loadNextMoviesPage(isLoadingMoreMovies: Boolean) =
+        loadNextMoviesPage(isLoadingMoreMovies, getNextPageOfMoviesFlow(), ::onNewMoviesList)
+
+    private fun getNextPageOfMoviesFlow(): Flow<PaginatedMovies> =
+        getNextPageOfMovies(++currentPage)
+
     private fun onNewMoviesList(localMovies: List<Movie>) {
-        val currentList = movies
-        val newMovies = localMovies.subtract(currentList.toSet())
-        val updatedList = currentList + newMovies
+        val updatedList = appendNewMovies(localMovies)
         movies = updatedList
         _state.postValue(
             Loaded(
@@ -60,28 +66,17 @@ class MovieListFragmentViewModel
         )
     }
 
-    private fun onRemoteSearchResults(localMovies: List<Movie>) {
+    private fun appendNewMovies(dataSourceMovies: List<Movie>): List<Movie> {
         val currentList = movies
-        val newMovies = localMovies.subtract(currentList.toSet())
-        val updatedList = currentList + newMovies
-        movies = updatedList
-        _state.postValue(
-            Searching(
-                updatedList,
-            )
-        )
+        val newMovies = dataSourceMovies.subtract(currentList.toSet())
+        return currentList + newMovies
     }
 
-    private fun onError(error: Throwable) {
-        if (error is NoMoreMoviesException)
-            isLoadingMoreMovies = false
-        isLastPage = true
-        _state.postValue(
-            Error(error)
-        )
-    }
-
-    fun loadNextMoviesPage(isLoadingMoreMovies: Boolean) {
+    private fun loadNextMoviesPage(
+        isLoadingMoreMovies: Boolean,
+        newDataSource: Flow<PaginatedMovies>,
+        functionToCall: (List<Movie>) -> Unit
+    ) {
         _state.postValue(Loading)
         this@MovieListFragmentViewModel.isLoadingMoreMovies = isLoadingMoreMovies
         val job = viewModelScope.launch(IO) {
@@ -91,7 +86,7 @@ class MovieListFragmentViewModel
             }
             combine(
                 getCachedMoviesUseCase(),
-                getNextPageOfMovies(++currentPage)
+                newDataSource
             ) { cached, paginated ->
                 initIsFavoriteProperty(cached, paginated.movies)
                 paginated
@@ -99,7 +94,7 @@ class MovieListFragmentViewModel
                 onError(error)
             }.collect {
                 val (movies, pagination) = it
-                onNewMoviesList(movies)
+                functionToCall(movies)
                 updatePaginationInfo(pagination)
                 this@MovieListFragmentViewModel.isLoadingMoreMovies = false
             }
@@ -122,42 +117,64 @@ class MovieListFragmentViewModel
         return remote
     }
 
-
-    fun searchRemotelyNextMoviesPage() {
-        searchRemotely(query, isLoadingMoreMovies = true)
+    private fun onError(error: Throwable) {
+        if (error is NoMoreMoviesException)
+            isLoadingMoreMovies = false
+        isLastPage = true
+        _state.postValue(
+            Error(error)
+        )
     }
 
-    private fun searchRemotely(query: String, isLoadingMoreMovies: Boolean) {
-        _state.postValue(Loading)
-        this@MovieListFragmentViewModel.isLoadingMoreMovies = isLoadingMoreMovies
-        val job = viewModelScope.launch(IO) {
+//    private fun searchRemotely(query: String, isLoadingMoreMovies: Boolean) {
+//
+//
+//        _state.postValue(Loading)
+//        this@MovieListFragmentViewModel.isLoadingMoreMovies = isLoadingMoreMovies
+//        val job = viewModelScope.launch(IO) {
+//
+//            runningJobs.filterNot { it == this.coroutineContext.job }.onEach {
+//                it.cancel()
+//            }
+//            combine(
+//                getCachedMoviesUseCase(),
+//
+//                ) { cached, paginated ->
+//                initIsFavoriteProperty(cached, paginated.movies)
+//                paginated
+//            }.catch { error ->
+//                onError(error)
+//            }.collect {
+//                val (movies, pagination) = it
+//                onRemoteSearchResults(movies)
+//                updatePaginationInfo(pagination)
+//                this@MovieListFragmentViewModel.isLoadingMoreMovies = false
+//            }
+//        }
+//
+//        runningJobs.add(job)
+//        job.invokeOnCompletion {
+//            it?.printStackTrace()
+//            runningJobs.remove(job)
+//        }
+//    }
 
-            runningJobs.filterNot { it == this.coroutineContext.job }.onEach {
-                it.cancel()
-            }
-            combine(
-                getCachedMoviesUseCase(),
-                searchMoviesRemotelyUseCase(
-                    pageToLoad = ++currentPage, query = query
-                )
-            ) { cached, paginated ->
-                initIsFavoriteProperty(cached, paginated.movies)
-                paginated
-            }.catch { error ->
-                onError(error)
-            }.collect {
-                val (movies, pagination) = it
-                onRemoteSearchResults(movies)
-                updatePaginationInfo(pagination)
-                this@MovieListFragmentViewModel.isLoadingMoreMovies = false
-            }
-        }
+    private fun searchRemotely(query: String, isLoadingMoreMovies: Boolean) =
+        loadNextMoviesPage(isLoadingMoreMovies, searchMoviesRemotelyFlow(query), ::onRemoteSearchResults)
 
-        runningJobs.add(job)
-        job.invokeOnCompletion {
-            it?.printStackTrace()
-            runningJobs.remove(job)
-        }
+    private fun searchMoviesRemotelyFlow(query: String): Flow<PaginatedMovies> =
+        searchMoviesRemotelyUseCase(
+            pageToLoad = ++currentPage, query = query
+        )
+
+    private fun onRemoteSearchResults(dataSourceMovies: List<Movie>) {
+        val updatedList = appendNewMovies(dataSourceMovies)
+        movies = updatedList
+        _state.postValue(
+            Searching(
+                updatedList,
+            )
+        )
     }
 
     fun searchSuggestionRemotely(suggestion: String) {
@@ -165,6 +182,9 @@ class MovieListFragmentViewModel
         resetPagination()
         searchRemotely(query = suggestion, isLoadingMoreMovies = false)
     }
+
+    fun searchRemotelyNextMoviesPage() =
+        searchRemotely(query, isLoadingMoreMovies = true)
 
 
     private fun updatePaginationInfo(pagination: Pagination) {

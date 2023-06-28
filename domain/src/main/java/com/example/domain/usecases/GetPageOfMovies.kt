@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetNextPageOfMovies @Inject constructor(
+class GetPageOfMovies @Inject constructor(
     private val movieRemoteRepository: MovieRepository.Remote,
     private val movieLocalRepository: MovieRepository.Local
 ) {
     operator fun invoke(pageToLoad: Int, pageSize: Int = PAGE_SIZE): Flow<PaginatedMovies> =
-        movieRemoteRepository.getNextMoviesPage(
+        movieRemoteRepository.getNowPlayingMoviesPage(
             pageToLoad = pageToLoad, numberOfItems = pageSize
         ).map { paginatedMovies ->
             val movies = paginatedMovies.movies

@@ -59,6 +59,16 @@ class MovieListFragment : Fragment() {
     private fun newAdapter(): MovieListAdapter =
         MovieListAdapter(::navigateToMovieDetails, ::onFavoriteClick)
 
+    private fun navigateToMovieDetails(movie: Movie) = navController.navigate(
+        MovieListFragmentDirections.actionMovieListFragmentToMovieDetailsFragment(
+            movie = movie
+        )
+    )
+    private fun onFavoriteClick(index: Int, movie: Movie) {
+        movie.isFavorite = !movie.isFavorite
+        binding.movieList.adapter?.apply { notifyItemChanged(index) }
+        viewModel.updateMovie(movie)
+    }
 
     private fun initMovieList(movieListAdapter: MovieListAdapter) = binding.movieList.apply {
         layoutManager = LinearLayoutManager(context)
@@ -79,7 +89,22 @@ class MovieListFragment : Fragment() {
         }
     }
 
+    fun onMoviesEvent() {
+        when (viewModel.state.value) {
+            is Loaded -> viewModel.loadNextMoviesPage(isLoadingMoreMovies = true)
+            is Searching -> viewModel.searchRemotelyNextMoviesPage()
+            else -> Unit
+        }
+    }
+
     private fun initSearchView() = binding.searchView.apply {
+
+        setQueryTextListener()
+        setSuggestionAdapter()
+        setSuggestionListener()
+    }
+
+    private fun SearchView.setQueryTextListener() {
         setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.updateQuery(query.orEmpty())
@@ -94,7 +119,10 @@ class MovieListFragment : Fragment() {
                 return true
             }
         })
+    }
 
+
+    private fun SearchView.setSuggestionAdapter() {
         suggestionsAdapter = SimpleCursorAdapter(
             context,
             android.R.layout.simple_list_item_1,
@@ -103,7 +131,9 @@ class MovieListFragment : Fragment() {
             /*to*/ intArrayOf(android.R.id.text1),
             CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
         )
+    }
 
+    private fun SearchView.setSuggestionListener() {
         setOnSuggestionListener(
             object : SearchView.OnSuggestionListener {
                 override fun onSuggestionSelect(position: Int): Boolean {
@@ -118,18 +148,6 @@ class MovieListFragment : Fragment() {
             })
     }
 
-    private fun observeViewStateUpdates(adapter: MovieListAdapter) {
-        viewModel.state.observe(viewLifecycleOwner) {
-            updateScreenState(it, adapter)
-        }
-    }
-
-    private fun onFavoriteClick(index: Int, movie: Movie) {
-        movie.isFavorite = !movie.isFavorite
-        binding.movieList.adapter?.apply { notifyItemChanged(index) }
-        viewModel.updateMovie(movie)
-    }
-
     @SuppressLint("Range")
     private fun onSuggestion(position: Int) {
         val cursor = (binding.searchView.suggestionsAdapter.getItem(position) as Cursor)
@@ -138,12 +156,72 @@ class MovieListFragment : Fragment() {
         viewModel.searchSuggestionRemotely(selection)
     }
 
-    fun onMoviesEvent() {
-        when (viewModel.state.value) {
-            is Loaded -> viewModel.loadNextMoviesPage(isLoadingMoreMovies = true)
-            is Searching -> viewModel.searchRemotelyNextMoviesPage()
-            else -> Unit
+    private fun observeViewStateUpdates(adapter: MovieListAdapter) {
+        viewModel.state.observe(viewLifecycleOwner) {
+            updateUi(it, adapter)
         }
+    }
+
+    private fun updateUi(state: MovieListFragmentUiState, adapter: MovieListAdapter) {
+        when (state) {
+            Loading ->
+                updateUiWhenLoading()
+
+            is Searching ->
+                updateUiWhenSearching(adapter, state)
+
+            is Loaded ->
+                updateUiWhenLoaded(adapter, state)
+
+            is StateError ->
+                updateUiWhenError(state)
+        }
+    }
+
+    private fun updateUiWhenLoading() {
+        binding.progressBar.isVisible = true
+    }
+
+    private fun updateUiWhenSearching(
+        adapter: MovieListAdapter,
+        state: Searching
+    ) {
+        binding.progressBar.isVisible = false
+        adapter.submitList(state.movies)
+        binding.searchView.apply {
+            val cursor =
+                MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
+
+            addRowsToCursor(state.movies, cursor)
+            suggestionsAdapter.changeCursor(cursor)
+        }
+    }
+
+    private fun SearchView.addRowsToCursor(
+        movies: List<Movie>,
+        cursor: MatrixCursor
+    ) {
+        query?.let {
+            movies
+                .map { it.title }
+                .forEachIndexed { index, suggestion ->
+                    if (suggestion.contains(query, true))
+                        cursor.addRow(arrayOf(index, suggestion))
+                }
+        }
+    }
+
+    private fun updateUiWhenLoaded(
+        adapter: MovieListAdapter,
+        state: Loaded
+    ) {
+        binding.progressBar.isVisible = false
+        adapter.submitList(state.movies)
+    }
+
+    private fun updateUiWhenError(state: MovieListFragmentUiState.Error) {
+        binding.progressBar.isVisible = false
+        onError(state.error)
     }
 
     private fun onError(error: Throwable) {
@@ -151,47 +229,6 @@ class MovieListFragment : Fragment() {
             is NoMoreMoviesException -> Unit
         }
     }
-
-    private fun updateScreenState(state: MovieListFragmentUiState, adapter: MovieListAdapter) {
-        when (state) {
-            Loading -> binding.progressBar.isVisible = true
-            is Searching -> {
-                binding.progressBar.isVisible = false
-                adapter.submitList(state.movies)
-
-                binding.searchView.apply {
-                    val cursor =
-                        MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
-
-                    query?.let {
-                        state.movies
-                            .map { it.title }
-                            .forEachIndexed { index, suggestion ->
-                                if (suggestion.contains(query, true))
-                                    cursor.addRow(arrayOf(index, suggestion))
-                            }
-                    }
-                    suggestionsAdapter.changeCursor(cursor)
-                }
-            }
-
-            is Loaded -> {
-                binding.progressBar.isVisible = false
-                adapter.submitList(state.movies)
-            }
-
-            is StateError -> {
-                binding.progressBar.isVisible = false
-                onError(state.error)
-            }
-        }
-    }
-
-    private fun navigateToMovieDetails(movie: Movie) = navController.navigate(
-        MovieListFragmentDirections.actionMovieListFragmentToMovieDetailsFragment(
-            movie = movie
-        )
-    )
 
     companion object {
         const val PAGE_SIZE = 20

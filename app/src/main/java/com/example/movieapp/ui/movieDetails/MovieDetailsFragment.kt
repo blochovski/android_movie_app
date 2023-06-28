@@ -41,6 +41,12 @@ class MovieDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = binding.root
 
+
+    private fun observeObservables() {
+        viewModel.movie.observe(this) {
+            initBinding(it)
+        }
+    }
     private fun initBinding(movie: Movie) = binding.apply {
         with(detailsPoster) {
             dispose()
@@ -58,6 +64,13 @@ class MovieDetailsFragment : Fragment() {
         detailsMovieOverview.text = movie.overview
     }
 
+    private fun setIsFavouriteDrawable(movie: Movie) = binding.isFavoriteButton.setImageDrawable(
+        getDrawable(
+            requireContext(),
+            if (movie.isFavorite) R.drawable.favorite_black_24dp else R.drawable.favorite_border_black_24dp
+        )
+    )
+
     private fun initToolbar() = binding.detailsToolbar.apply {
         navigationIcon =
             getDrawable(
@@ -69,19 +82,6 @@ class MovieDetailsFragment : Fragment() {
         }
         background = ColorDrawable(context.getColor(R.color.card_background))
     }
-
-    private fun observeObservables() {
-        viewModel.movie.observe(this) {
-            initBinding(it)
-        }
-    }
-
-    private fun setIsFavouriteDrawable(movie: Movie) = binding.isFavoriteButton.setImageDrawable(
-        getDrawable(
-            requireContext(),
-            if (movie.isFavorite) R.drawable.favorite_black_24dp else R.drawable.favorite_border_black_24dp
-        )
-    )
 
     private fun navigateBackToMovieList() = navController.popBackStack()
 }

@@ -1,11 +1,9 @@
 package com.pibi.movieApp.network
 
 import com.example.data.network.Network
-import com.pibi.movieApp.network.model.movies.mappers.toDomain
+import com.example.domain.model.pagination.PaginatedMovies
 import com.pibi.movieApp.network.model.movies.mappers.toDomainPaginatedMovies
 import com.pibi.movieApp.network.model.search.mappers.toDomainPaginatedMovies
-import com.example.domain.model.movie.Movie
-import com.example.domain.model.pagination.PaginatedMovies
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -13,15 +11,8 @@ import javax.inject.Inject
 class RetrofitNetwork @Inject constructor(
     private val api: MovieApi
 ) : Network {
-    override fun getMovies(): Flow<List<Movie>> = flow {
-        val movies = api.getNowPlayingMovies(
-            apiKey = API_KEY,
-            pageToLoad = 1
-        ).results.map { it.toDomain() }
-        emit(movies)
-    }
 
-    override fun getNowPlayingMovies(pageToLoad: Int): Flow<PaginatedMovies> =
+    override fun getNowPlayingMoviesPage(pageToLoad: Int): Flow<PaginatedMovies> =
         flow {
             emit(
                 api.getNowPlayingMovies(

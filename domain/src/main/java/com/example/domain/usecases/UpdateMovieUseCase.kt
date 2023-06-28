@@ -7,5 +7,5 @@ import javax.inject.Inject
 class UpdateMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository.Local
 ) {
-    operator fun invoke(movie: Movie) = movieRepository.updateMovie(movie)
+    operator fun invoke(movie: Movie) = movieRepository.updateCachedMovie(movie)
 }
